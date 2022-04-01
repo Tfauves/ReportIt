@@ -3,6 +3,9 @@ package com.example.Spring.Auth.models.auth;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -16,12 +19,12 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-//    @NotBlank
-//    @Email
+    @NotBlank
+    @Email
     private String username;
 
-//    @NotBlank
-//    @Size(min = 5, max = 100)
+    @NotBlank
+    @Size(min = 5, max = 100)
     @JsonIgnore
     private String password;
 
