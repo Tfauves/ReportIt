@@ -16,10 +16,12 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
+//    @NotBlank
+//    @Email
     private String username;
 
-
+//    @NotBlank
+//    @Size(min = 5, max = 100)
     @JsonIgnore
     private String password;
 
