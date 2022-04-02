@@ -2,13 +2,16 @@ package com.example.Spring.Auth.controllers;
 
 import com.example.Spring.Auth.models.auth.User;
 import com.example.Spring.Auth.models.profile.Profile;
+import com.example.Spring.Auth.payload.response.api.response.AddressInfo;
 import com.example.Spring.Auth.repositories.ProfileRepository;
 import com.example.Spring.Auth.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 
@@ -21,6 +24,12 @@ public class ProfileController {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    RestTemplate restTemplate;
+
+    @Value("${Spring-Auth.app.addressApiKey}")
+    private String apiKey;
 
 
 //////////////Admin only routes
@@ -75,6 +84,17 @@ public class ProfileController {
        newProfile.setUser(currentUser);
        return new ResponseEntity<>(repository.save(newProfile), HttpStatus.CREATED);
    }
+    //https://service.zipapi.us/zipcode/02780/?X-API-KEY=js-90cebf473f1dd65370fc7cf03e9184b5
+   @GetMapping("/address/{zipCode}")
+   public ResponseEntity<?> getAddressInfo(@PathVariable String zipCode) {
+        String uri = "https://service.zipapi.us/zipcode/" + zipCode + "/?X-API-KEY=" + apiKey;
+
+       AddressInfo response = restTemplate.getForObject(uri, AddressInfo.class);
+       return ResponseEntity.ok(response);
+   }
+
+
+
 
     @GetMapping("/self")
     public @ResponseBody Profile getSelf() {
