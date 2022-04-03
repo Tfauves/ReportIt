@@ -40,9 +40,9 @@ public class ProfileController {
 
         if (updateData.getFname() != null) updatedProfile.setFname(updateData.getFname());
         if (updateData.getLname() != null) updatedProfile.setLname(updateData.getLname());
-        if (updateData.getCity() != null) updatedProfile.setCity(updateData.getCity());
-        if (updateData.getState() != null) updatedProfile.setState(updateData.getState());
-
+//        if (updateData.getCity() != null) updatedProfile.setCity(updateData.getCity());
+//        if (updateData.getState() != null) updatedProfile.setState(updateData.getState());
+        if (updateData.getZipcode() != null) updatedProfile.setZipcode(updateData.getZipcode());
         return repository.save(updatedProfile);
     }
 
@@ -84,7 +84,7 @@ public class ProfileController {
        newProfile.setUser(currentUser);
        return new ResponseEntity<>(repository.save(newProfile), HttpStatus.CREATED);
    }
-    //https://service.zipapi.us/zipcode/02780/?X-API-KEY=js-90cebf473f1dd65370fc7cf03e9184b5
+
    @GetMapping("/address/{zipCode}")
    public ResponseEntity<?> getAddressInfo(@PathVariable String zipCode) {
         String uri = "https://service.zipapi.us/zipcode/" + zipCode + "/?X-API-KEY=" + apiKey;
@@ -92,9 +92,6 @@ public class ProfileController {
        AddressInfo response = restTemplate.getForObject(uri, AddressInfo.class);
        return ResponseEntity.ok(response);
    }
-
-
-
 
     @GetMapping("/self")
     public @ResponseBody Profile getSelf() {
@@ -116,9 +113,9 @@ public class ProfileController {
        Profile updatedProfile = repository.findByUser_id(currentUser.getId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
        if (updateData.getFname() != null) updatedProfile.setFname(updateData.getFname());
        if (updateData.getLname() != null) updatedProfile.setLname(updateData.getLname());
-       if (updateData.getCity() != null) updatedProfile.setCity(updateData.getCity());
-       if (updateData.getState() != null) updatedProfile.setState(updateData.getState());
-
+//       if (updateData.getCity() != null) updatedProfile.setCity(updateData.getCity());
+//       if (updateData.getState() != null) updatedProfile.setState(updateData.getState());
+       if (updateData.getZipcode() != null) updatedProfile.setZipcode(updateData.getZipcode());
        return repository.save(updatedProfile);
    }
 

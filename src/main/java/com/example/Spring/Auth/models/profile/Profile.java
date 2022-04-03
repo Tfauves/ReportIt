@@ -1,6 +1,7 @@
 package com.example.Spring.Auth.models.profile;
 
 import com.example.Spring.Auth.models.auth.User;
+import com.example.Spring.Auth.models.report.Report;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
@@ -12,8 +13,12 @@ public class Profile {
     private Long id;
     private String fname;
     private String lname;
-    private String city;
-    private String state;
+    private String zipcode;
+
+
+    @OneToOne
+    @JoinColumn(name = "report_id", referencedColumnName = "id")
+    private Report report;
 
     @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
@@ -22,12 +27,12 @@ public class Profile {
 
     public Profile() {}
 
-    public Profile(User user, String fname, String lname, String city, String state) {
+    public Profile(User user, String fname, String lname, String zipcode ) {
         this.user = user;
         this.fname = fname;
         this.lname = lname;
-        this.city = city;
-        this.state = state;
+        this.zipcode = zipcode;
+
     }
 
     public Long getId() {
@@ -54,23 +59,6 @@ public class Profile {
         this.lname = lname;
     }
 
-    public String getCity() {
-        return city;
-    }
-
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public String getState() {
-        return state;
-    }
-
-    public void setState(String state) {
-        this.state = state;
-    }
-
     public User getUser() {
         return user;
     }
@@ -80,4 +68,11 @@ public class Profile {
     }
 
 
+    public String getZipcode() {
+        return zipcode;
+    }
+
+    public void setZipcode(String zipcode) {
+        this.zipcode = zipcode;
+    }
 }
