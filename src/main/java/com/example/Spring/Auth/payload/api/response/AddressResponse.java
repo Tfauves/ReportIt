@@ -1,4 +1,4 @@
-package com.example.Spring.Auth.payload.response.api.response;
+package com.example.Spring.Auth.payload.api.response;
 
 public class AddressResponse {
 

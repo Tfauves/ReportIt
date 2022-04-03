@@ -2,7 +2,7 @@ package com.example.Spring.Auth.controllers;
 
 import com.example.Spring.Auth.models.auth.User;
 import com.example.Spring.Auth.models.profile.Profile;
-import com.example.Spring.Auth.payload.response.api.response.AddressInfo;
+import com.example.Spring.Auth.payload.api.response.AddressInfo;
 import com.example.Spring.Auth.repositories.ProfileRepository;
 import com.example.Spring.Auth.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
