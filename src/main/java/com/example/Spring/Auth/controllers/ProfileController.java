@@ -93,9 +93,6 @@ public class ProfileController {
        return ResponseEntity.ok(response);
    }
 
-
-
-
     @GetMapping("/self")
     public @ResponseBody Profile getSelf() {
         User currentUser = userService.getCurrentUser();
