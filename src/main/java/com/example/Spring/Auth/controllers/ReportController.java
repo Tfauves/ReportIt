@@ -33,12 +33,9 @@ public class ReportController {
     public ResponseEntity<Report> createReport(@RequestBody Report newReport) {
 
         User currentUser = userService.getCurrentUser();
-
         if(currentUser == null) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-
         }
-
         newReport.setProfile(profileRepository.findByUser_id(currentUser.getId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND)));
 
         return new ResponseEntity<>(repository.save(newReport), HttpStatus.CREATED);
@@ -48,5 +45,10 @@ public class ReportController {
     public @ResponseBody
     List<Report> getAllReports() {
         return repository.findAll();
+    }
+
+    @GetMapping("{profId}")
+    public List<Report> findAllByProfile_id(@PathVariable Long profId) {
+        return repository.findAllByProfile_id(profId);
     }
 }
