@@ -40,8 +40,6 @@ public class ProfileController {
 
         if (updateData.getFname() != null) updatedProfile.setFname(updateData.getFname());
         if (updateData.getLname() != null) updatedProfile.setLname(updateData.getLname());
-//        if (updateData.getCity() != null) updatedProfile.setCity(updateData.getCity());
-//        if (updateData.getState() != null) updatedProfile.setState(updateData.getState());
         if (updateData.getZipcode() != null) updatedProfile.setZipcode(updateData.getZipcode());
         return repository.save(updatedProfile);
     }

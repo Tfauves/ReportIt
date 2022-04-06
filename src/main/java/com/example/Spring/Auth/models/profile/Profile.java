@@ -13,6 +13,9 @@ public class Profile {
     private Long id;
     private String fname;
     private String lname;
+    private String city;
+    private String state;
+    private String state_fullname;
     private String zipcode;
 
 
@@ -67,6 +70,37 @@ public class Profile {
         this.user = user;
     }
 
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public String getState_fullname() {
+        return state_fullname;
+    }
+
+    public void setState_fullname(String state_fullname) {
+        this.state_fullname = state_fullname;
+    }
+
+    public Report getReport() {
+        return report;
+    }
+
+    public void setReport(Report report) {
+        this.report = report;
+    }
 
     public String getZipcode() {
         return zipcode;
