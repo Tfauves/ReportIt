@@ -50,12 +50,6 @@ public class ProfileController {
        return repository.findAll();
    }
 
-    @GetMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
-    public @ResponseBody Profile getOneById(@PathVariable Long id) {
-        return repository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-
-    }
 
     @PostMapping("/new")
     @PreAuthorize("hasRole('ADMIN')")
@@ -83,9 +77,14 @@ public class ProfileController {
        return new ResponseEntity<>(repository.save(newProfile), HttpStatus.CREATED);
    }
 
-   @GetMapping("/address/{zipCode}")
-   public ResponseEntity<?> getAddressInfo(@PathVariable String zipCode) {
-        String uri = "https://service.zipapi.us/zipcode/" + zipCode + "/?X-API-KEY=" + apiKey;
+   @GetMapping("/address")
+   public ResponseEntity<?> getAddressInfo() {
+        User currentUser = userService.getCurrentUser();
+        if (currentUser == null) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+        Profile profile = repository.findByUser_id(currentUser.getId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        String uri = "https://service.zipapi.us/zipcode/" + profile.getZipcode() + "/?X-API-KEY=" + apiKey;
 
        AddressInfo response = restTemplate.getForObject(uri, AddressInfo.class);
        return ResponseEntity.ok(response);
@@ -101,7 +100,13 @@ public class ProfileController {
         return repository.findByUser_id(currentUser.getId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
-   @PutMapping
+    @GetMapping("/{id}")
+    public @ResponseBody Profile getOneById(@PathVariable Long id) {
+        return repository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+    }
+
+    @PutMapping
     public @ResponseBody Profile updateProfileById(@RequestBody Profile updateData) {
        User currentUser = userService.getCurrentUser();
        if(currentUser == null) {

@@ -1,5 +1,6 @@
 package com.example.Spring.Auth.models.profile;
 
+import com.example.Spring.Auth.controllers.ProfileController;
 import com.example.Spring.Auth.models.auth.User;
 import com.example.Spring.Auth.models.report.Report;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -18,7 +19,6 @@ public class Profile {
     private String state_fullname;
     private String zipcode;
 
-
     @OneToOne
     @JoinColumn(name = "report_id", referencedColumnName = "id")
     private Report report;
@@ -35,7 +35,6 @@ public class Profile {
         this.fname = fname;
         this.lname = lname;
         this.zipcode = zipcode;
-
     }
 
     public Long getId() {
