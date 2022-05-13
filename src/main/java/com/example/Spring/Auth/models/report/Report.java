@@ -19,6 +19,7 @@ public class Report {
     private String issue;
     private String location;
     private Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+    private Boolean isActive = true;
 
     public Report() {}
 
@@ -67,5 +68,13 @@ public class Report {
 
     public void setProfile(Profile profile) {
         this.profile = profile;
+    }
+
+    public Boolean getActive() {
+        return isActive;
+    }
+
+    public void setActive(Boolean active) {
+        isActive = active;
     }
 }

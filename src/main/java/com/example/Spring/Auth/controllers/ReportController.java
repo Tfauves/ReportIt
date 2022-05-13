@@ -51,4 +51,10 @@ public class ReportController {
     public List<Report> findAllByProfile_id(@PathVariable Long profId) {
         return repository.findAllByProfile_id(profId);
     }
+
+    @GetMapping("{/id}")
+    public @ResponseBody Report getReportById(@PathVariable Long id) {
+        return repository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+    }
+
 }
