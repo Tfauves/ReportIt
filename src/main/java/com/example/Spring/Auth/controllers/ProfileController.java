@@ -44,13 +44,6 @@ public class ProfileController {
         return repository.save(updatedProfile);
     }
 
-   @GetMapping
-   @PreAuthorize("hasRole('ADMIN')")
-    public @ResponseBody List<Profile> getAll() {
-       return repository.findAll();
-   }
-
-
     @PostMapping("/new")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Profile> createProfile(@RequestBody Profile newProfile) {
@@ -104,6 +97,11 @@ public class ProfileController {
     public @ResponseBody Profile getOneById(@PathVariable Long id) {
         return repository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
+    }
+
+    @GetMapping
+    public @ResponseBody List<Profile> getAll() {
+        return repository.findAll();
     }
 
     @PutMapping

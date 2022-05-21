@@ -16,9 +16,12 @@ public class Profile {
     private String lname;
     private String city;
     private String state;
+    // TODO: 5/21/2022 state_fullname is returning null 
     private String state_fullname;
+    // TODO: 5/20/2022 zip is returning as null
     private String zipcode;
 
+    // TODO: 5/20/2022  report is showing as null need to check db 
     @OneToOne
     @JoinColumn(name = "report_id", referencedColumnName = "id")
     private Report report;
