@@ -47,13 +47,13 @@ public class ReportController {
         return repository.findAll();
     }
 
-    // TODO: 5/20/2022 this mapping is throwing an error ambiguous handler 
+
     @GetMapping("/{profId}")
-    public List<Report> findAllByProfile_id(@PathVariable Long profId) {
+    public @ResponseBody List<Report> findAllByProfile_id(@PathVariable Long profId) {
         return repository.findAllByProfile_id(profId);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/id/{id}")
     public @ResponseBody Report getReportById(@PathVariable Long id) {
         return repository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
