@@ -28,8 +28,9 @@ public class ProfileController {
     @Autowired
     RestTemplate restTemplate;
 
-    @Value("${Spring-Auth.app.addressApiKey}")
-    private String apiKey;
+    // TODO: 11/18/2022 find new geo api 
+//    @Value("${Spring-Auth.app.addressApiKey}")
+//    private String apiKey;
 
 
 //////////////Admin only routes
@@ -70,18 +71,18 @@ public class ProfileController {
        return new ResponseEntity<>(repository.save(newProfile), HttpStatus.CREATED);
    }
 
-   @GetMapping("/address")
-   public ResponseEntity<?> getAddressInfo() {
-        User currentUser = userService.getCurrentUser();
-        if (currentUser == null) {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        }
-        Profile profile = repository.findByUser_id(currentUser.getId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        String uri = "https://service.zipapi.us/zipcode/" + profile.getZipcode() + "/?X-API-KEY=" + apiKey;
-
-       AddressInfo response = restTemplate.getForObject(uri, AddressInfo.class);
-       return ResponseEntity.ok(response);
-   }
+//   @GetMapping("/address")
+//   public ResponseEntity<?> getAddressInfo() {
+//        User currentUser = userService.getCurrentUser();
+//        if (currentUser == null) {
+//            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+//        }
+//        Profile profile = repository.findByUser_id(currentUser.getId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+//        String uri = "https://service.zipapi.us/zipcode/" + profile.getZipcode() + "/?X-API-KEY=" + apiKey;
+//
+//       AddressInfo response = restTemplate.getForObject(uri, AddressInfo.class);
+//       return ResponseEntity.ok(response);
+//   }
 
     @GetMapping("/self")
     public @ResponseBody Profile getSelf() {

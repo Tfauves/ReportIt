@@ -1,6 +1,5 @@
 package com.example.Spring.Auth.models.profile;
 
-import com.example.Spring.Auth.controllers.ProfileController;
 import com.example.Spring.Auth.models.auth.User;
 import com.example.Spring.Auth.models.report.Report;
 import com.fasterxml.jackson.annotation.JsonIgnore;
