@@ -16,7 +16,7 @@ import java.util.Date;
 public class JwtUtils {
     private static Logger logger = LoggerFactory.getLogger(JwtUtils.class);
 
-    @Value("${reportit.app.jwtSecret}")
+    @Value("${Spring-Auth.app.jwtSecret}")
     private String jwtSecret;
 
     public Boolean validateJwtToken(String authToken) {
