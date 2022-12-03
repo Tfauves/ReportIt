@@ -1,6 +1,6 @@
 package com.example.Spring.Auth.models.servicearea;
 
-import com.example.Spring.Auth.models.profile.ServicaAreaAdmin;
+import com.example.Spring.Auth.models.profile.ServiceAreaAdmin;
 import javax.persistence.*;
 
 @Entity
@@ -11,7 +11,7 @@ public class ServiceArea {
 
     @OneToOne
     @JoinColumn(name = "service_area_admin_id", referencedColumnName = "id")
-    private ServicaAreaAdmin serviceAreaAdmin;
+    private ServiceAreaAdmin serviceAreaAdmin;
 
     private String name;
     private String state;
@@ -25,7 +25,7 @@ public class ServiceArea {
     public ServiceArea() {
     }
 
-    public ServiceArea(Long id, ServicaAreaAdmin serviceAreaAdmin, String name, String state, String county, String zipcode, String longitude, String latitude, Integer openReports, Integer closedReports) {
+    public ServiceArea(Long id, ServiceAreaAdmin serviceAreaAdmin, String name, String state, String county, String zipcode, String longitude, String latitude, Integer openReports, Integer closedReports) {
         this.id = id;
         this.serviceAreaAdmin = serviceAreaAdmin;
         this.name = name;
@@ -46,11 +46,11 @@ public class ServiceArea {
         this.id = id;
     }
 
-    public ServicaAreaAdmin getServiceAreaAdmin() {
+    public ServiceAreaAdmin getServiceAreaAdmin() {
         return serviceAreaAdmin;
     }
 
-    public void setServiceAreaAdmin(ServicaAreaAdmin serviceAreaAdmin) {
+    public void setServiceAreaAdmin(ServiceAreaAdmin serviceAreaAdmin) {
         this.serviceAreaAdmin = serviceAreaAdmin;
     }
 

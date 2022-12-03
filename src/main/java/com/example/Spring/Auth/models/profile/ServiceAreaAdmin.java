@@ -6,18 +6,26 @@ import com.example.Spring.Auth.models.servicearea.ServiceArea;
 import javax.persistence.*;
 
 @Entity
-public class ServicaAreaAdmin {
+public class ServiceAreaAdmin {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String fname;
+    private String lname;
+    private String jobtitle;
+    private String email;
+    private String phone;
+    private String municipalityname;
+    private String populationsize;
+    private String state;
 
     @OneToOne
     @JoinColumn(name = "service_area_id", referencedColumnName = "id")
     private ServiceArea serviceArea;
 
-    public ServicaAreaAdmin() {}
+    public ServiceAreaAdmin() {}
 
-    public ServicaAreaAdmin(Long id, ServiceArea serviceArea) {
+    public ServiceAreaAdmin(Long id, ServiceArea serviceArea) {
         this.id = id;
         this.serviceArea = serviceArea;
     }
