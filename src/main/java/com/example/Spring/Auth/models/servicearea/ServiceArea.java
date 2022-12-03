@@ -16,7 +16,7 @@ public class ServiceArea {
     private String name;
     private String state;
     private String county;
-    private String zipCode;
+    private String zipcode;
     private String longitude;
     private String latitude;
     private Integer openReports = 0;
@@ -25,13 +25,13 @@ public class ServiceArea {
     public ServiceArea() {
     }
 
-    public ServiceArea(Long id, ServicaAreaAdmin serviceAreaAdmin, String name, String state, String county, String zipCode, String longitude, String latitude, Integer openReports, Integer closedReports) {
+    public ServiceArea(Long id, ServicaAreaAdmin serviceAreaAdmin, String name, String state, String county, String zipcode, String longitude, String latitude, Integer openReports, Integer closedReports) {
         this.id = id;
         this.serviceAreaAdmin = serviceAreaAdmin;
         this.name = name;
         this.state = state;
         this.county = county;
-        this.zipCode = zipCode;
+        this.zipcode = zipcode;
         this.longitude = longitude;
         this.latitude = latitude;
         this.openReports = openReports;
@@ -78,12 +78,12 @@ public class ServiceArea {
         this.county = county;
     }
 
-    public String getZipCode() {
-        return zipCode;
+    public String getZipcode() {
+        return zipcode;
     }
 
-    public void setZipCode(String zipCode) {
-        this.zipCode = zipCode;
+    public void setZipcode(String zipcode) {
+        this.zipcode = zipcode;
     }
 
     public String getLongitude() {
