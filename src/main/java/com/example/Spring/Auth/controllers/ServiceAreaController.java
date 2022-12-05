@@ -29,18 +29,21 @@ public class ServiceAreaController {
     }
 
     @GetMapping()
+    @PreAuthorize("hasRole('ADMIN')")
     public @ResponseBody
     List<ServiceArea> getAllServiceArea() {
         return repository.findAll();
     }
 
     @PutMapping()
+    @PreAuthorize("hasRole('ADMIN')")
     public @ResponseBody ServiceArea updateServiceArea(@RequestBody ServiceArea updateData) {
         return updateData;
     }
 
     // TODO: 12/3/2022 finish adding admin to the service area. 
     @PutMapping("/{adminId}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ServiceArea> updateServiceAreaAdmin(@RequestBody ServiceArea updateData, @PathVariable Long adminId) {
         
       if (updateData.getServiceAreaAdmin() != null) ;
