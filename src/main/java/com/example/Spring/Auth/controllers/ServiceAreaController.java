@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -35,19 +36,16 @@ public class ServiceAreaController {
         return repository.findAll();
     }
 
-    @PutMapping()
+    @PutMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public @ResponseBody ServiceArea updateServiceArea(@RequestBody ServiceArea updateData) {
-        return updateData;
+    public @ResponseBody ServiceArea updateServiceArea(@PathVariable Long id, @RequestBody ServiceArea updateData) {
+        ServiceArea updateArea = repository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        if(updateData.getServiceAreaAdmin() != null) updateArea.setServiceAreaAdmin(updateData.getServiceAreaAdmin());
+
+
+        return repository.save(updateArea);
     }
 
-    // TODO: 12/3/2022 finish adding admin to the service area. 
-    @PutMapping("/{adminId}")
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<ServiceArea> updateServiceAreaAdmin(@RequestBody ServiceArea updateData, @PathVariable Long adminId) {
-        
-      if (updateData.getServiceAreaAdmin() != null) ;
 
-        return new ResponseEntity<>(repository.save(updateData), HttpStatus.CREATED);
-    }
 }
