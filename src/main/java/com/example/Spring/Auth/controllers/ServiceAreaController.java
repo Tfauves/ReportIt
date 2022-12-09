@@ -36,16 +36,16 @@ public class ServiceAreaController {
         return repository.findAll();
     }
 
-    @PutMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
-    public @ResponseBody ServiceArea updateServiceArea(@PathVariable Long id, @RequestBody ServiceArea updateData) {
-        ServiceArea updateArea = repository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-
-        if(updateData.getServiceAreaAdmin() != null) updateArea.setServiceAreaAdmin(updateData.getServiceAreaAdmin());
-
-
-        return repository.save(updateArea);
-    }
+//    @PutMapping("/{id}")
+//    @PreAuthorize("hasRole('ADMIN')")
+//    public @ResponseBody ServiceArea updateServiceArea(@PathVariable Long id, @RequestBody ServiceArea updateData) {
+//        ServiceArea updateArea = repository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+//
+//        if(updateData.getServiceAreaAdmin() != null) updateArea.setServiceAreaAdmin(updateData.getServiceAreaAdmin());
+//
+//
+//        return repository.save(updateArea);
+//    }
 
 
 }

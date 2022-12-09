@@ -19,7 +19,7 @@ public class ServiceAreaAdmin {
     private String populationsize;
     private String state;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "service_area_id", referencedColumnName = "id")
     private ServiceArea serviceArea;
 

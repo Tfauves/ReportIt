@@ -2,6 +2,7 @@ package com.example.Spring.Auth.models.servicearea;
 
 import com.example.Spring.Auth.models.profile.ServiceAreaAdmin;
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 public class ServiceArea {
@@ -9,9 +10,8 @@ public class ServiceArea {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
-    @JoinColumn(name = "service_area_admin_id", referencedColumnName = "id")
-    private ServiceAreaAdmin serviceAreaAdmin;
+    @OneToMany(mappedBy = "serviceArea", fetch = FetchType.LAZY)
+    private Set<ServiceAreaAdmin> serviceAreaAdmin;
 
     private String name;
     private String state;
@@ -25,9 +25,8 @@ public class ServiceArea {
     public ServiceArea() {
     }
 
-    public ServiceArea(Long id, ServiceAreaAdmin serviceAreaAdmin, String name, String state, String county, String zipcode, String longitude, String latitude, Integer openReports, Integer closedReports) {
+    public ServiceArea(Long id, String name, String state, String county, String zipcode, String longitude, String latitude, Integer openReports, Integer closedReports) {
         this.id = id;
-        this.serviceAreaAdmin = serviceAreaAdmin;
         this.name = name;
         this.state = state;
         this.county = county;
@@ -44,14 +43,6 @@ public class ServiceArea {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public ServiceAreaAdmin getServiceAreaAdmin() {
-        return serviceAreaAdmin;
-    }
-
-    public void setServiceAreaAdmin(ServiceAreaAdmin serviceAreaAdmin) {
-        this.serviceAreaAdmin = serviceAreaAdmin;
     }
 
     public String getName() {
@@ -116,5 +107,13 @@ public class ServiceArea {
 
     public void setClosedReports(Integer closedReports) {
         this.closedReports = closedReports;
+    }
+
+    public Set<ServiceAreaAdmin> getServiceAreaAdmin() {
+        return serviceAreaAdmin;
+    }
+
+    public void setServiceAreaAdmin(Set<ServiceAreaAdmin> serviceAreaAdmin) {
+        this.serviceAreaAdmin = serviceAreaAdmin;
     }
 }

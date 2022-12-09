@@ -36,12 +36,16 @@ public class ServiceAreaAdminController {
         return repository.findAll();
     }
 
-    // TODO: 12/6/2022 not working 
+
     @PutMapping("/{id}")
     public @ResponseBody ServiceAreaAdmin updateServiceAreaAdminWithArea(@PathVariable Long id, @RequestBody ServiceAreaAdmin updateData) {
         ServiceAreaAdmin updateAdmin = repository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
-        if(updateData.getServiceArea() != null) updateAdmin.setServiceArea(updateAdmin.getServiceArea());
+        ServiceArea updateServiceArea = serviceAreaRepository.findById(updateAdmin.getId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        if(updateData.getServiceArea() != null) {
+            updateAdmin.setServiceArea(updateData.getServiceArea());
+        }
 
         return repository.save(updateAdmin);
     }
