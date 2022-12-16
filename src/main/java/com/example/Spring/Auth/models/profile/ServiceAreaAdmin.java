@@ -1,7 +1,9 @@
 package com.example.Spring.Auth.models.profile;
 
 
+import com.example.Spring.Auth.models.auth.User;
 import com.example.Spring.Auth.models.servicearea.ServiceArea;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 
@@ -18,6 +20,11 @@ public class ServiceAreaAdmin {
     private String municipalityname;
     private String populationsize;
     private String state;
+    // TODO: 12/16/2022 refactor model  
+    @OneToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @JsonIgnore
+    private User user;
 
     @ManyToOne
     @JoinColumn(name = "service_area_id", referencedColumnName = "id")
@@ -25,8 +32,9 @@ public class ServiceAreaAdmin {
 
     public ServiceAreaAdmin() {}
 
-    public ServiceAreaAdmin(Long id, ServiceArea serviceArea) {
+    public ServiceAreaAdmin(Long id, User user, ServiceArea serviceArea) {
         this.id = id;
+        this.user = user;
         this.serviceArea = serviceArea;
     }
 
@@ -108,5 +116,13 @@ public class ServiceAreaAdmin {
 
     public void setState(String state) {
         this.state = state;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

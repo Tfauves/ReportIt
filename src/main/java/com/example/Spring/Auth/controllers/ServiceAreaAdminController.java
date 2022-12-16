@@ -36,7 +36,7 @@ public class ServiceAreaAdminController {
         return repository.findAll();
     }
 
-
+    // TODO: 12/9/2022 needs refactor 
     @PutMapping("/{id}")
     public @ResponseBody ServiceAreaAdmin updateServiceAreaAdminWithArea(@PathVariable Long id, @RequestBody ServiceAreaAdmin updateData) {
         ServiceAreaAdmin updateAdmin = repository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
