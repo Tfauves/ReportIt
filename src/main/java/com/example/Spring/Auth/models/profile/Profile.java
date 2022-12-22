@@ -5,6 +5,7 @@ import com.example.Spring.Auth.models.report.Report;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 public class Profile {
@@ -21,9 +22,9 @@ public class Profile {
     private String zipcode;
 
     // TODO: 5/20/2022  report is showing as null need to check db 
-    @OneToOne
+    @OneToMany
     @JoinColumn(name = "report_id", referencedColumnName = "id")
-    private Report report;
+    private Set<Report> report;
 
     @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
@@ -95,13 +96,7 @@ public class Profile {
         this.state_fullname = state_fullname;
     }
 
-    public Report getReport() {
-        return report;
-    }
 
-    public void setReport(Report report) {
-        this.report = report;
-    }
 
     public String getZipcode() {
         return zipcode;
@@ -109,5 +104,13 @@ public class Profile {
 
     public void setZipcode(String zipcode) {
         this.zipcode = zipcode;
+    }
+
+    public Set<Report> getReport() {
+        return report;
+    }
+
+    public void setReport(Set<Report> report) {
+        this.report = report;
     }
 }

@@ -12,7 +12,7 @@ public class Report {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "profile_id", referencedColumnName = "id")
     private Profile profile;
 
