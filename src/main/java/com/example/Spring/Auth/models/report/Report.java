@@ -16,16 +16,17 @@ public class Report {
     @JoinColumn(name = "profile_id", referencedColumnName = "id")
     private Profile profile;
 
-    private String issue;
+    private String issueType;
     private String location;
+    private String description;
     private Timestamp timestamp = new Timestamp(System.currentTimeMillis());
     private Boolean isActive = true;
 
     public Report() {}
 
-    public Report(Profile profile, String issue, String location, Timestamp timestamp) {
+    public Report(Profile profile, String issueType, String location, String description, Timestamp timestamp) {
         this.profile = profile;
-        this.issue = issue;
+        this.issueType = issueType;
         this.location = location;
         this.timestamp = timestamp;
     }
@@ -38,6 +39,22 @@ public class Report {
         this.id = id;
     }
 
+    public Profile getProfile() {
+        return profile;
+    }
+
+    public void setProfile(Profile profile) {
+        this.profile = profile;
+    }
+
+    public String getIssueType() {
+        return issueType;
+    }
+
+    public void setIssueType(String issueType) {
+        this.issueType = issueType;
+    }
+
     public String getLocation() {
         return location;
     }
@@ -46,28 +63,20 @@ public class Report {
         this.location = location;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public Timestamp getTimestamp() {
         return timestamp;
     }
 
     public void setTimestamp(Timestamp timestamp) {
         this.timestamp = timestamp;
-    }
-
-    public String getIssue() {
-        return issue;
-    }
-
-    public void setIssue(String issue) {
-        this.issue = issue;
-    }
-
-    public Profile getProfile() {
-        return profile;
-    }
-
-    public void setProfile(Profile profile) {
-        this.profile = profile;
     }
 
     public Boolean getActive() {

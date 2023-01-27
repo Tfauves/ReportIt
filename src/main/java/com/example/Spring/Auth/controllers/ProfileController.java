@@ -1,8 +1,10 @@
 package com.example.Spring.Auth.controllers;
 
+import com.example.Spring.Auth.models.Avatar;
 import com.example.Spring.Auth.models.auth.User;
 import com.example.Spring.Auth.models.profile.Profile;
 import com.example.Spring.Auth.payload.api.response.AddressInfo;
+import com.example.Spring.Auth.repositories.AvatarRepository;
 import com.example.Spring.Auth.repositories.ProfileRepository;
 import com.example.Spring.Auth.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,9 @@ public class ProfileController {
     ProfileRepository repository;
 
     @Autowired
+    AvatarRepository avatarRepository;
+
+    @Autowired
     UserService userService;
 
     @Autowired
@@ -38,9 +43,6 @@ public class ProfileController {
     public @ResponseBody Profile updateProfileById(@PathVariable Long id, @RequestBody Profile updateData) {
         Profile updatedProfile = repository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
-        if (updateData.getFname() != null) updatedProfile.setFname(updateData.getFname());
-        if (updateData.getLname() != null) updatedProfile.setLname(updateData.getLname());
-        if (updateData.getZipcode() != null) updatedProfile.setZipcode(updateData.getZipcode());
         return repository.save(updatedProfile);
     }
 
@@ -66,6 +68,10 @@ public class ProfileController {
            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
        }
 
+       Avatar avatar = newProfile.getProfilePic();
+       avatar.setUrl(newProfile.getProfilePic().getUrl());
+       avatarRepository.save(avatar);
+
        newProfile.setUser(currentUser);
        return new ResponseEntity<>(repository.save(newProfile), HttpStatus.CREATED);
    }
@@ -77,7 +83,7 @@ public class ProfileController {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
         Profile profile = repository.findByUser_id(currentUser.getId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        String uri = "https://service.zipapi.us/zipcode/" + profile.getZipcode() + "/?X-API-KEY=" + apiKey;
+        String uri = "https://service.zipapi.us/zipcode/" + currentUser.getZip() + "/?X-API-KEY=" + apiKey;
 
        AddressInfo response = restTemplate.getForObject(uri, AddressInfo.class);
        return ResponseEntity.ok(response);
@@ -99,11 +105,7 @@ public class ProfileController {
 
     }
 
-    @GetMapping
-    public @ResponseBody List<Profile> getAll() {
-        return repository.findAll();
-    }
-
+    // TODO: 1/27/2023 need new profile update path 
     @PutMapping
     public @ResponseBody Profile updateProfileById(@RequestBody Profile updateData) {
        User currentUser = userService.getCurrentUser();
@@ -112,11 +114,7 @@ public class ProfileController {
        }
 
        Profile updatedProfile = repository.findByUser_id(currentUser.getId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-       if (updateData.getFname() != null) updatedProfile.setFname(updateData.getFname());
-       if (updateData.getLname() != null) updatedProfile.setLname(updateData.getLname());
-//       if (updateData.getCity() != null) updatedProfile.setCity(updateData.getCity());
-//       if (updateData.getState() != null) updatedProfile.setState(updateData.getState());
-       if (updateData.getZipcode() != null) updatedProfile.setZipcode(updateData.getZipcode());
+
        return repository.save(updatedProfile);
    }
 

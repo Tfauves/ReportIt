@@ -1,8 +1,10 @@
 package com.example.Spring.Auth.models.profile;
 
+import com.example.Spring.Auth.models.Avatar;
 import com.example.Spring.Auth.models.auth.User;
 import com.example.Spring.Auth.models.report.Report;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -12,32 +14,30 @@ public class Profile {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String fname;
-    private String lname;
-    private String city;
-    private String state;
-    // TODO: 5/21/2022 state_fullname is returning null 
-    private String state_fullname;
-
-    private String zipcode;
-
-    // TODO: 5/20/2022  report is showing as null need to check db 
-    @OneToMany
-    @JoinColumn(name = "report_id", referencedColumnName = "id")
-    private Set<Report> report;
 
     @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     @JsonIgnore
     private User user;
 
+    private String profileUsername;
+
+    private String title = "newbie";
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JsonIgnoreProperties("id")
+    private Avatar profilePic;
+
+    @OneToMany
+    @JoinColumn(name = "report_id", referencedColumnName = "id")
+    private Set<Report> report;
+
     public Profile() {}
 
-    public Profile(User user, String fname, String lname, String zipcode ) {
+    public Profile(User user, String profileUsername, Avatar profilePic) {
         this.user = user;
-        this.fname = fname;
-        this.lname = lname;
-        this.zipcode = zipcode;
+        this.profileUsername = profileUsername;
+        this.profilePic = profilePic;
     }
 
     public Long getId() {
@@ -48,22 +48,6 @@ public class Profile {
         this.id = id;
     }
 
-    public String getFname() {
-        return fname;
-    }
-
-    public void setFname(String fname) {
-        this.fname = fname;
-    }
-
-    public String getLname() {
-        return lname;
-    }
-
-    public void setLname(String lname) {
-        this.lname = lname;
-    }
-
     public User getUser() {
         return user;
     }
@@ -72,38 +56,28 @@ public class Profile {
         this.user = user;
     }
 
-    public String getCity() {
-        return city;
+    public String getProfileUsername() {
+        return profileUsername;
     }
 
-    public void setCity(String city) {
-        this.city = city;
+    public void setProfileUsername(String profileUsername) {
+        this.profileUsername = profileUsername;
     }
 
-    public String getState() {
-        return state;
+    public String getTitle() {
+        return title;
     }
 
-    public void setState(String state) {
-        this.state = state;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public String getState_fullname() {
-        return state_fullname;
+    public Avatar getProfilePic() {
+        return profilePic;
     }
 
-    public void setState_fullname(String state_fullname) {
-        this.state_fullname = state_fullname;
-    }
-
-
-
-    public String getZipcode() {
-        return zipcode;
-    }
-
-    public void setZipcode(String zipcode) {
-        this.zipcode = zipcode;
+    public void setProfilePic(Avatar profilePic) {
+        this.profilePic = profilePic;
     }
 
     public Set<Report> getReport() {
