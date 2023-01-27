@@ -16,8 +16,16 @@ import java.util.Set;
         })
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
+    @NotBlank
+    @JsonIgnore
+    private String fname;
+
+    @NotBlank
+    @JsonIgnore
+    private String lname;
 
     @NotBlank
     @Email
@@ -28,6 +36,9 @@ public class User {
     @JsonIgnore
     private String password;
 
+    @NotBlank
+    private String zip;
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -37,9 +48,24 @@ public class User {
     public User() {
     }
 
-    public User(String username, String password) {
+    public User(String fname, String lname, String username, String password, String zip, Set<Role> roles) {
+        this.fname = fname;
+        this.lname = lname;
         this.username = username;
         this.password = password;
+        this.zip = zip;
+        this.roles = roles;
+    }
+
+    public User(String username, String encode) {
+    }
+
+    public User(String fname, String lname, String username, String encode, String zip) {
+        this.fname = fname;
+        this.lname = lname;
+        this.username = username;
+        this.password = encode;
+        this.zip = zip;
     }
 
     public Long getId() {
@@ -74,4 +100,19 @@ public class User {
         this.roles = roles;
     }
 
+    public String getFname() {
+        return fname;
+    }
+
+    public void setFname(String fname) {
+        this.fname = fname;
+    }
+
+    public String getZip() {
+        return zip;
+    }
+
+    public void setZip(String zip) {
+        this.zip = zip;
+    }
 }
