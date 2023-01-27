@@ -15,7 +15,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.server.ResponseStatusException;
-import java.util.List;
+
 
 @CrossOrigin
 @RestController
@@ -61,7 +61,7 @@ public class ProfileController {
 
 
 /////////////Open routes
-   @PostMapping
+   @PostMapping("/pic")
     public ResponseEntity<Profile> createOne(@RequestBody Profile newProfile) {
        User currentUser = userService.getCurrentUser();
        if (currentUser == null) {
@@ -74,6 +74,17 @@ public class ProfileController {
 
        newProfile.setUser(currentUser);
        return new ResponseEntity<>(repository.save(newProfile), HttpStatus.CREATED);
+   }
+
+   @PostMapping
+   public ResponseEntity<Profile> createNewProfile(@RequestBody Profile newProfile) {
+        User currentUser = userService.getCurrentUser();
+        if (currentUser == null) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+
+        newProfile.setUser(currentUser);
+        return new ResponseEntity<>(repository.save(newProfile), HttpStatus.CREATED);
    }
 
    @GetMapping("/address")

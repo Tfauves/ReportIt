@@ -3,6 +3,7 @@ package com.example.Spring.Auth.models.profile;
 import com.example.Spring.Auth.models.Avatar;
 import com.example.Spring.Auth.models.auth.User;
 import com.example.Spring.Auth.models.report.Report;
+import com.example.Spring.Auth.models.servicearea.ServiceArea;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -27,6 +28,9 @@ public class Profile {
     @OneToOne(cascade = CascadeType.ALL)
     @JsonIgnoreProperties("id")
     private Avatar profilePic;
+
+    @OneToOne
+    private ServiceArea serviceArea;
 
     @OneToMany
     @JoinColumn(name = "report_id", referencedColumnName = "id")
