@@ -1,8 +1,6 @@
 package com.example.Spring.Auth.controllers;
 
-
 import com.example.Spring.Auth.models.auth.User;
-import com.example.Spring.Auth.models.profile.Profile;
 import com.example.Spring.Auth.models.report.Report;
 import com.example.Spring.Auth.repositories.ProfileRepository;
 import com.example.Spring.Auth.repositories.ReportRepository;

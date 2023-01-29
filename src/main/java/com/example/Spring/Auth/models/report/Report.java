@@ -2,6 +2,8 @@ package com.example.Spring.Auth.models.report;
 
 
 import com.example.Spring.Auth.models.profile.Profile;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -14,6 +16,7 @@ public class Report {
 
     @ManyToOne
     @JoinColumn(name = "profile_id", referencedColumnName = "id")
+//    @JsonIgnoreProperties("report")
     private Profile profile;
 
     private String issueType;
@@ -86,4 +89,6 @@ public class Report {
     public void setActive(Boolean active) {
         isActive = active;
     }
+
+
 }

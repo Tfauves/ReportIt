@@ -3,9 +3,11 @@ package com.example.Spring.Auth.controllers;
 import com.example.Spring.Auth.models.Avatar;
 import com.example.Spring.Auth.models.auth.User;
 import com.example.Spring.Auth.models.profile.Profile;
+import com.example.Spring.Auth.models.report.Report;
 import com.example.Spring.Auth.payload.api.response.AddressInfo;
 import com.example.Spring.Auth.repositories.AvatarRepository;
 import com.example.Spring.Auth.repositories.ProfileRepository;
+import com.example.Spring.Auth.repositories.ReportRepository;
 import com.example.Spring.Auth.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,6 +17,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.server.ResponseStatusException;
+
+import java.util.List;
 
 
 @CrossOrigin
@@ -26,6 +30,9 @@ public class ProfileController {
 
     @Autowired
     AvatarRepository avatarRepository;
+
+    @Autowired
+    ReportRepository reportRepository;
 
     @Autowired
     UserService userService;
@@ -57,6 +64,13 @@ public class ProfileController {
     public ResponseEntity<String> destroyProfile(@PathVariable Long id) {
         repository.deleteById(id);
         return new ResponseEntity<>("Deleted", HttpStatus.OK);
+    }
+
+    @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
+    public @ResponseBody
+    List<Profile> ReadAllProfiles() {
+        return repository.findAll();
     }
 
 
@@ -128,6 +142,5 @@ public class ProfileController {
 
        return repository.save(updatedProfile);
    }
-
 
 }

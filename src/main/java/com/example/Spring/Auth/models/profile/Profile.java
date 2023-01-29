@@ -6,7 +6,6 @@ import com.example.Spring.Auth.models.report.Report;
 import com.example.Spring.Auth.models.servicearea.ServiceArea;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import javax.persistence.*;
 import java.util.Set;
 
@@ -24,6 +23,8 @@ public class Profile {
     private String profileUsername;
 
     private String title = "newbie";
+
+    private Integer reportCount = 0;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JsonIgnoreProperties("id")
@@ -90,5 +91,21 @@ public class Profile {
 
     public void setReport(Set<Report> report) {
         this.report = report;
+    }
+
+    public Integer getReportCount() {
+        return reportCount;
+    }
+
+    public void setReportCount(Integer reportCount) {
+        this.reportCount = reportCount;
+    }
+
+    public ServiceArea getServiceArea() {
+        return serviceArea;
+    }
+
+    public void setServiceArea(ServiceArea serviceArea) {
+        this.serviceArea = serviceArea;
     }
 }
