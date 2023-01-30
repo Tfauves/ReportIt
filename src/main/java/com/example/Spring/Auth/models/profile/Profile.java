@@ -6,6 +6,8 @@ import com.example.Spring.Auth.models.report.Report;
 import com.example.Spring.Auth.models.servicearea.ServiceArea;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonIncludeProperties;
+
 import javax.persistence.*;
 import java.util.Set;
 
@@ -35,6 +37,7 @@ public class Profile {
 
     @OneToMany
     @JoinColumn(name = "report_id", referencedColumnName = "id")
+    @JsonIncludeProperties({"id", "location", "description", "timestamp", "active", "issueType"})
     private Set<Report> report;
 
     public Profile() {}

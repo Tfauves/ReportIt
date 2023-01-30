@@ -143,4 +143,25 @@ public class ProfileController {
        return repository.save(updatedProfile);
    }
 
+   @PostMapping("/reportit")
+    public @ResponseBody Profile createReport(@RequestBody Report newReport) {
+
+        User currentUser = userService.getCurrentUser();
+        Profile currentUserProfile = repository.findByUser_id(currentUser.getId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        Report report = new Report();
+
+        if (newReport.getDescription() != null) report.setDescription(newReport.getDescription());
+        if (newReport.getLocation() != null) report.setLocation(newReport.getLocation());
+        if (newReport.getIssueType() != null) report.setIssueType(newReport.getIssueType());
+       report.setProfile(currentUserProfile);
+       reportRepository.save(report);
+
+       currentUserProfile.getReport().add(report);
+
+        return repository.save(currentUserProfile);
+
+   }
+
 }
