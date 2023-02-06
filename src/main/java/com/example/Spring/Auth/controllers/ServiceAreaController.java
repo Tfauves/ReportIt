@@ -26,6 +26,7 @@ public class ServiceAreaController {
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ServiceArea> createServiceArea(@RequestBody ServiceArea newServiceArea) {
+
         return new ResponseEntity<>(repository.save(newServiceArea), HttpStatus.CREATED);
     }
 

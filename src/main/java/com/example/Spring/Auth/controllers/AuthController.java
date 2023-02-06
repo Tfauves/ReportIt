@@ -88,6 +88,10 @@ public class AuthController {
                         Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN).orElseThrow(()-> new RuntimeException(("error")));
                         roles.add(adminRole);
                         break;
+                    case "mod":
+                        Role modRole = roleRepository.findByName(ERole.ROLE_MOD).orElseThrow(()-> new RuntimeException(("error")));
+                        roles.add(modRole);
+                        break;
                     default:
                         Role userRole = roleRepository.findByName(ERole.ROLE_USER).orElseThrow(()-> new RuntimeException(("error")));
                         roles.add(userRole);

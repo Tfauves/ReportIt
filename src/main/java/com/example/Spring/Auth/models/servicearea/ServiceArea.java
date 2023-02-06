@@ -1,17 +1,22 @@
 package com.example.Spring.Auth.models.servicearea;
 
 import com.example.Spring.Auth.models.profile.ServiceAreaAdmin;
+import com.example.Spring.Auth.models.report.Report;
+
 import javax.persistence.*;
 import java.util.Set;
 
 @Entity
 public class ServiceArea {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @OneToMany(mappedBy = "serviceArea", fetch = FetchType.LAZY)
     private Set<ServiceAreaAdmin> serviceAreaAdmin;
+
+    @OneToMany
+    private Set<Report> reports;
 
     private String name;
     private String state;
@@ -25,8 +30,7 @@ public class ServiceArea {
     public ServiceArea() {
     }
 
-    public ServiceArea(Long id, String name, String state, String county, String zipcode, String longitude, String latitude, Integer openReports, Integer closedReports) {
-        this.id = id;
+    public ServiceArea(String name, String state, String county, String zipcode, String longitude, String latitude, Integer openReports, Integer closedReports) {
         this.name = name;
         this.state = state;
         this.county = county;
@@ -115,5 +119,13 @@ public class ServiceArea {
 
     public void setServiceAreaAdmin(Set<ServiceAreaAdmin> serviceAreaAdmin) {
         this.serviceAreaAdmin = serviceAreaAdmin;
+    }
+
+    public Set<Report> getReports() {
+        return reports;
+    }
+
+    public void setReports(Set<Report> reports) {
+        this.reports = reports;
     }
 }

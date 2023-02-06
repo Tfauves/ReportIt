@@ -24,7 +24,6 @@ public class ServiceAreaAdminController {
     ServiceAreaRepository serviceAreaRepository;
 
     @PostMapping
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ServiceAreaAdmin> createServiceAreaAdmin(@RequestBody ServiceAreaAdmin newAdmin) {
         return new ResponseEntity<>(repository.save(newAdmin), HttpStatus.CREATED);
     }
@@ -36,16 +35,17 @@ public class ServiceAreaAdminController {
         return repository.findAll();
     }
 
-    // TODO: 12/9/2022 needs refactor 
     @PutMapping("/{id}")
-    public @ResponseBody ServiceAreaAdmin updateServiceAreaAdminWithArea(@PathVariable Long id, @RequestBody ServiceAreaAdmin updateData) {
+    public @ResponseBody ServiceAreaAdmin updateServiceAreaAdminWithArea(@PathVariable Long id, @RequestBody ServiceArea updateData) {
         ServiceAreaAdmin updateAdmin = repository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
-        ServiceArea updateServiceArea = serviceAreaRepository.findById(updateAdmin.getId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        ServiceArea serviceArea = serviceAreaRepository.findById(updateData.getId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        
+        updateAdmin.setServiceArea(serviceArea);
 
-        if(updateData.getServiceArea() != null) {
-            updateAdmin.setServiceArea(updateData.getServiceArea());
-        }
+        // TODO: 2/6/2023 set the area admin to the service area.  
+
+        
 
         return repository.save(updateAdmin);
     }

@@ -1,11 +1,7 @@
 package com.example.Spring.Auth.models.report;
 
-
 import com.example.Spring.Auth.models.profile.Profile;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonIncludeProperties;
-
 import javax.persistence.*;
 import java.sql.Timestamp;
 

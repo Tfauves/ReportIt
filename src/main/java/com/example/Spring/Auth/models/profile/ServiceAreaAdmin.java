@@ -10,17 +10,15 @@ import javax.persistence.*;
 @Entity
 public class ServiceAreaAdmin {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private String fname;
-    private String lname;
     private String jobtitle;
     private String email;
     private String phone;
     private String municipalityname;
     private String populationsize;
     private String state;
-    // TODO: 12/16/2022 refactor model  
+
     @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     @JsonIgnore
@@ -32,8 +30,13 @@ public class ServiceAreaAdmin {
 
     public ServiceAreaAdmin() {}
 
-    public ServiceAreaAdmin(Long id, User user, ServiceArea serviceArea) {
-        this.id = id;
+    public ServiceAreaAdmin(String jobtitle, String email, String phone, String municipalityname, String populationsize, String state, User user, ServiceArea serviceArea) {
+        this.jobtitle = jobtitle;
+        this.email = email;
+        this.phone = phone;
+        this.municipalityname = municipalityname;
+        this.populationsize = populationsize;
+        this.state = state;
         this.user = user;
         this.serviceArea = serviceArea;
     }
@@ -52,22 +55,6 @@ public class ServiceAreaAdmin {
 
     public void setServiceArea(ServiceArea serviceArea) {
         this.serviceArea = serviceArea;
-    }
-
-    public String getFname() {
-        return fname;
-    }
-
-    public void setFname(String fname) {
-        this.fname = fname;
-    }
-
-    public String getLname() {
-        return lname;
-    }
-
-    public void setLname(String lname) {
-        this.lname = lname;
     }
 
     public String getJobtitle() {
