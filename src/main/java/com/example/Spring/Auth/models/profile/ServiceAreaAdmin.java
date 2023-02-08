@@ -1,10 +1,8 @@
 package com.example.Spring.Auth.models.profile;
 
-
 import com.example.Spring.Auth.models.auth.User;
 import com.example.Spring.Auth.models.servicearea.ServiceArea;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.*;
 
 @Entity
@@ -24,8 +22,7 @@ public class ServiceAreaAdmin {
     @JsonIgnore
     private User user;
 
-    @ManyToOne
-    @JoinColumn(name = "service_area_id", referencedColumnName = "id")
+    @OneToOne
     private ServiceArea serviceArea;
 
     public ServiceAreaAdmin() {}

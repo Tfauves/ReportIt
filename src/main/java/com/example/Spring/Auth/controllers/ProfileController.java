@@ -4,10 +4,12 @@ import com.example.Spring.Auth.models.Avatar;
 import com.example.Spring.Auth.models.auth.User;
 import com.example.Spring.Auth.models.profile.Profile;
 import com.example.Spring.Auth.models.report.Report;
+import com.example.Spring.Auth.models.servicearea.ServiceArea;
 import com.example.Spring.Auth.payload.api.response.AddressInfo;
 import com.example.Spring.Auth.repositories.AvatarRepository;
 import com.example.Spring.Auth.repositories.ProfileRepository;
 import com.example.Spring.Auth.repositories.ReportRepository;
+import com.example.Spring.Auth.repositories.ServiceAreaRepository;
 import com.example.Spring.Auth.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,7 +19,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.server.ResponseStatusException;
-
 import java.util.List;
 
 
@@ -33,6 +34,9 @@ public class ProfileController {
 
     @Autowired
     ReportRepository reportRepository;
+
+    @Autowired
+    ServiceAreaRepository serviceAreaRepository;
 
     @Autowired
     UserService userService;
@@ -130,15 +134,37 @@ public class ProfileController {
 
     }
 
-    // TODO: 1/27/2023 need new profile update path 
     @PutMapping
-    public @ResponseBody Profile updateProfileById(@RequestBody Profile updateData) {
-       User currentUser = userService.getCurrentUser();
-       if(currentUser == null) {
-           return null;
-       }
+    public Profile updateProfile(@RequestBody Profile updateData) {
+        User currentUser = userService.getCurrentUser();
+        if (currentUser == null) return null;
 
-       Profile updatedProfile = repository.findByUser_id(currentUser.getId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        Profile profile = repository.findByUser_id(currentUser.getId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        if (updateData.getProfileUsername() != null) profile.setProfileUsername(updateData.getProfileUsername());
+        if (updateData.getProfilePic() != null) {
+            Avatar avatar = updateData.getProfilePic();
+            avatar.setUrl(updateData.getProfilePic().getUrl());
+            avatarRepository.save(avatar);
+            profile.setProfilePic(avatar);
+        }
+        Avatar avatar = profile.getProfilePic();
+        avatarRepository.save(avatar);
+
+        return repository.save(profile);
+
+    }
+
+
+    @PutMapping("/area/{proId}")
+    public @ResponseBody Profile updateProfileAreaById(@RequestBody Profile updateData, @PathVariable Long proId) {
+        Profile updatedProfile = repository
+                .findById(proId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        ServiceArea serviceArea = serviceAreaRepository.findById(updateData.getServiceArea().getId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        if (updateData.getServiceArea() != null) updatedProfile.setServiceArea(serviceArea);
 
        return repository.save(updatedProfile);
    }
