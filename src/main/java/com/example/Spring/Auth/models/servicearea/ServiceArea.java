@@ -14,7 +14,7 @@ public class ServiceArea {
     @OneToOne
     private ServiceAreaAdmin serviceAreaAdmin;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private Set<Report> reports;
 
     private String name;

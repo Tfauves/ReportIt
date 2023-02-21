@@ -1,14 +1,16 @@
 package com.example.Spring.Auth.models.report;
 
 import com.example.Spring.Auth.models.profile.Profile;
+import com.example.Spring.Auth.models.servicearea.ServiceArea;
 import com.fasterxml.jackson.annotation.JsonIncludeProperties;
 import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Entity
 public class Report {
+    // if crash reset generation type to identity
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @ManyToOne
@@ -16,6 +18,9 @@ public class Report {
 //    @JsonIgnoreProperties("report")
     @JsonIncludeProperties("id")
     private Profile profile;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    private ServiceArea serviceArea;
 
     private String issueType;
     private String location;
@@ -25,8 +30,9 @@ public class Report {
 
     public Report() {}
 
-    public Report(Profile profile, String issueType, String location, String description, Timestamp timestamp) {
+    public Report(Profile profile, ServiceArea serviceArea, String issueType, String location, String description, Timestamp timestamp) {
         this.profile = profile;
+        this.serviceArea = serviceArea;
         this.issueType = issueType;
         this.location = location;
         this.timestamp = timestamp;
@@ -46,6 +52,14 @@ public class Report {
 
     public void setProfile(Profile profile) {
         this.profile = profile;
+    }
+
+    public ServiceArea getServiceArea() {
+        return serviceArea;
+    }
+
+    public void setServiceArea(ServiceArea serviceArea) {
+        this.serviceArea = serviceArea;
     }
 
     public String getIssueType() {

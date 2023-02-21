@@ -3,13 +3,11 @@ package com.example.Spring.Auth.controllers;
 import com.example.Spring.Auth.models.Avatar;
 import com.example.Spring.Auth.models.auth.User;
 import com.example.Spring.Auth.models.profile.Profile;
+import com.example.Spring.Auth.models.profile.ServiceAreaAdmin;
 import com.example.Spring.Auth.models.report.Report;
 import com.example.Spring.Auth.models.servicearea.ServiceArea;
 import com.example.Spring.Auth.payload.api.response.AddressInfo;
-import com.example.Spring.Auth.repositories.AvatarRepository;
-import com.example.Spring.Auth.repositories.ProfileRepository;
-import com.example.Spring.Auth.repositories.ReportRepository;
-import com.example.Spring.Auth.repositories.ServiceAreaRepository;
+import com.example.Spring.Auth.repositories.*;
 import com.example.Spring.Auth.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -34,6 +32,9 @@ public class ProfileController {
 
     @Autowired
     ReportRepository reportRepository;
+
+    @Autowired
+    ServiceAreaAdminRepository serviceAreaAdminRepository;
 
     @Autowired
     ServiceAreaRepository serviceAreaRepository;
@@ -141,6 +142,12 @@ public class ProfileController {
 
         Profile profile = repository.findByUser_id(currentUser.getId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        ServiceArea serviceArea = serviceAreaRepository.findById(updateData.getServiceArea().getId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        if (updateData.getServiceArea() != null) profile.setServiceArea(serviceArea);
+
         if (updateData.getProfileUsername() != null) profile.setProfileUsername(updateData.getProfileUsername());
         if (updateData.getProfilePic() != null) {
             Avatar avatar = updateData.getProfilePic();
@@ -157,17 +164,21 @@ public class ProfileController {
 
 
     @PutMapping("/area/{proId}")
-    public @ResponseBody Profile updateProfileAreaById(@RequestBody Profile updateData, @PathVariable Long proId) {
-        Profile updatedProfile = repository
+    public @ResponseBody ServiceAreaAdmin updateProfileAreaById(@RequestBody ServiceAreaAdmin updateData, @PathVariable Long proId) {
+        ServiceAreaAdmin updatedProfile = serviceAreaAdminRepository
                 .findById(proId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
         ServiceArea serviceArea = serviceAreaRepository.findById(updateData.getServiceArea().getId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
         if (updateData.getServiceArea() != null) updatedProfile.setServiceArea(serviceArea);
+        serviceArea.setServiceAreaAdmin(serviceAreaAdminRepository.getById(updateData.getId()));
+        serviceAreaRepository.save(serviceArea);
 
-       return repository.save(updatedProfile);
+       return serviceAreaAdminRepository.save(updatedProfile);
    }
+
+
 
    @PostMapping("/reportit")
     public @ResponseBody Profile createReport(@RequestBody Report newReport) {
