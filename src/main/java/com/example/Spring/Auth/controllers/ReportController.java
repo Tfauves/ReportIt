@@ -41,16 +41,20 @@ public class ReportController {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
 
+
+
         ServiceArea serviceArea = serviceAreaRepository.findById(areaId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-
         serviceArea.getReports().add(newReport);
         serviceArea.setOpenReports(1);
 
-        serviceAreaRepository.save(serviceArea);
+        newReport.setServiceArea(serviceArea);
+
+// TODO: 2/22/2023 set report to profile
+
 
         newReport.setProfile(profileRepository.findByUser_id(currentUser.getId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND)));
-
+        serviceAreaRepository.save(serviceArea);
         return new ResponseEntity<>(repository.save(newReport), HttpStatus.CREATED);
     }
 

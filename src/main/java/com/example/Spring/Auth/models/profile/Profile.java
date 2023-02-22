@@ -33,6 +33,7 @@ public class Profile {
     private Avatar profilePic;
 
     @OneToOne
+    @JsonIncludeProperties({"id", "name", "state", "zipcode", "openReports", "closedReports"})
     private ServiceArea serviceArea;
 
     @OneToMany

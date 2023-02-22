@@ -20,6 +20,7 @@ public class Report {
     private Profile profile;
 
     @OneToOne(cascade = CascadeType.ALL)
+    @JsonIncludeProperties("id")
     private ServiceArea serviceArea;
 
     private String issueType;
@@ -35,6 +36,7 @@ public class Report {
         this.serviceArea = serviceArea;
         this.issueType = issueType;
         this.location = location;
+        this.description = description;
         this.timestamp = timestamp;
     }
 
