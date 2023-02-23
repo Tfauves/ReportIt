@@ -101,7 +101,7 @@ public class ServiceArea {
     }
 
     public void setOpenReports(Integer openReports) {
-        this.openReports = openReports;
+        this.openReports += openReports;
     }
 
     public Integer getClosedReports() {
