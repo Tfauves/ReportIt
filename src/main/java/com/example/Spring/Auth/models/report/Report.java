@@ -13,7 +13,7 @@ public class Report {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "profile_id", referencedColumnName = "id")
 //    @JsonIgnoreProperties("report")
     @JsonIncludeProperties("id")

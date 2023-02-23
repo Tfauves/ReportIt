@@ -26,7 +26,7 @@ public class Profile {
 
     private String title = "newbie";
 
-    private Integer reportCount = 0;
+    private Integer civicWins = 0;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JsonIgnoreProperties("id")
@@ -36,7 +36,7 @@ public class Profile {
     @JsonIncludeProperties({"id", "name", "state", "zipcode", "openReports", "closedReports"})
     private ServiceArea serviceArea;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "report_id", referencedColumnName = "id")
     @JsonIncludeProperties({"id", "location", "description", "timestamp", "active", "issueType"})
     private Set<Report> report;
@@ -97,12 +97,12 @@ public class Profile {
         this.report = report;
     }
 
-    public Integer getReportCount() {
-        return reportCount;
+    public Integer getCivicWins() {
+        return civicWins;
     }
 
-    public void setReportCount(Integer reportCount) {
-        this.reportCount = reportCount;
+    public void setCivicWins(Integer civicWins) {
+        this.civicWins = civicWins;
     }
 
     public ServiceArea getServiceArea() {
