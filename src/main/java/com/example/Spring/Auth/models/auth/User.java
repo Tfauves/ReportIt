@@ -1,5 +1,6 @@
 package com.example.Spring.Auth.models.auth;
 
+import com.example.Spring.Auth.models.servicearea.ServiceArea;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;

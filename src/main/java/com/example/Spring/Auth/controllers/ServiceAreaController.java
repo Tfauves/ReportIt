@@ -30,4 +30,10 @@ public class ServiceAreaController {
         return repository.findAll();
     }
 
+    @GetMapping("/{zip}")
+    public @ResponseBody ServiceArea getAreaByZip(@PathVariable String zip) {
+        return repository.findByZipcode(zip);
+
+    }
+
 }
