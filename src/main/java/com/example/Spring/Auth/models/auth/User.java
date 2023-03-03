@@ -2,6 +2,7 @@ package com.example.Spring.Auth.models.auth;
 
 import com.example.Spring.Auth.models.servicearea.ServiceArea;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIncludeProperties;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -40,6 +41,10 @@ public class User {
     @NotBlank
     private String zip;
 
+    @OneToOne
+    @JsonIncludeProperties({"id", "name", "state", "zipcode", "openReports", "closedReports"})
+    private ServiceArea serviceArea;
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -49,14 +54,6 @@ public class User {
     public User() {
     }
 
-    public User(String fname, String lname, String username, String password, String zip, Set<Role> roles) {
-        this.fname = fname;
-        this.lname = lname;
-        this.username = username;
-        this.password = password;
-        this.zip = zip;
-        this.roles = roles;
-    }
 
     public User(String username, String encode) {
     }
@@ -125,4 +122,11 @@ public class User {
         this.roles = roles;
     }
 
+    public ServiceArea getServiceArea() {
+        return serviceArea;
+    }
+
+    public void setServiceArea(ServiceArea serviceArea) {
+        this.serviceArea = serviceArea;
+    }
 }

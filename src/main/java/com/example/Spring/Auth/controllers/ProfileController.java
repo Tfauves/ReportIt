@@ -102,7 +102,9 @@ public class ProfileController {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
 
+
         newProfile.setUser(currentUser);
+        newProfile.setServiceArea(currentUser.getServiceArea());
         return new ResponseEntity<>(repository.save(newProfile), HttpStatus.CREATED);
    }
 
@@ -143,11 +145,11 @@ public class ProfileController {
         Profile profile = repository.findByUser_id(currentUser.getId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
-        if (updateData.getServiceArea() != null) {
-            ServiceArea serviceArea = serviceAreaRepository.findById(updateData.getServiceArea().getId())
-                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-            profile.setServiceArea(serviceArea);
-        }
+//        if (updateData.getServiceArea() != null) {
+//            ServiceArea serviceArea = serviceAreaRepository.findById(updateData.getServiceArea().getId())
+//                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+//            profile.setServiceArea(serviceArea);
+//        }
 
         if (updateData.getProfileUsername() != null) profile.setProfileUsername(updateData.getProfileUsername());
         if (updateData.getProfilePic() != null) {

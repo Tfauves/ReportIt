@@ -3,11 +3,13 @@ package com.example.Spring.Auth.controllers;
 import com.example.Spring.Auth.models.auth.ERole;
 import com.example.Spring.Auth.models.auth.Role;
 import com.example.Spring.Auth.models.auth.User;
+import com.example.Spring.Auth.models.servicearea.ServiceArea;
 import com.example.Spring.Auth.payload.request.LoginRequest;
 import com.example.Spring.Auth.payload.request.SignupRequest;
 import com.example.Spring.Auth.payload.response.JwtResponse;
 import com.example.Spring.Auth.payload.response.MessageResponse;
 import com.example.Spring.Auth.repositories.RoleRepository;
+import com.example.Spring.Auth.repositories.ServiceAreaRepository;
 import com.example.Spring.Auth.repositories.UserRepository;
 import com.example.Spring.Auth.security.jwt.JwtUtils;
 import com.example.Spring.Auth.security.services.UserDetailsImpl;
@@ -36,6 +38,9 @@ public class AuthController {
 
     @Autowired
     private RoleRepository roleRepository;
+
+    @Autowired
+    ServiceAreaRepository serviceAreaRepository;
 
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -77,6 +82,9 @@ public class AuthController {
         User user = new User(signupRequest.getFname(), signupRequest.getLname(), signupRequest.getUsername(), encoder.encode(signupRequest.getPassword()), signupRequest.getZip());
         Set<String> strRoles = signupRequest.getRoles();
         Set<Role> roles = new HashSet<>();
+        // TODO: 3/2/2023 if no service area matches zip or zip is null return message to user to contact their local govnt
+        ServiceArea serviceArea = serviceAreaRepository.findByZipcode(signupRequest.getZip());
+        user.setServiceArea(serviceArea);
 
         if (strRoles == null) {
             Role userRole = roleRepository.findByName(ERole.ROLE_USER).orElseThrow(() -> new RuntimeException("Error: Role is not found"));
