@@ -2,6 +2,8 @@ package com.example.Spring.Auth.models.servicearea;
 
 import com.example.Spring.Auth.models.profile.ServiceAreaAdmin;
 import com.example.Spring.Auth.models.report.Report;
+import com.fasterxml.jackson.annotation.JsonIncludeProperties;
+
 import javax.persistence.*;
 import java.util.Set;
 
@@ -12,6 +14,7 @@ public class ServiceArea {
     private Long id;
 
     @OneToOne
+    @JsonIncludeProperties({"id", "state"})
     private ServiceAreaAdmin serviceAreaAdmin;
 
     @OneToMany(cascade = CascadeType.ALL)

@@ -1,13 +1,19 @@
 package com.example.Spring.Auth.controllers;
 
+import com.example.Spring.Auth.models.auth.User;
 import com.example.Spring.Auth.models.profile.ServiceAreaAdmin;
+import com.example.Spring.Auth.models.servicearea.ServiceArea;
 import com.example.Spring.Auth.repositories.ServiceAreaAdminRepository;
 import com.example.Spring.Auth.repositories.ServiceAreaRepository;
+import com.example.Spring.Auth.repositories.UserRepository;
+import com.example.Spring.Auth.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
+
 import java.util.List;
 
 @CrossOrigin
@@ -18,10 +24,19 @@ public class ServiceAreaAdminController {
     ServiceAreaAdminRepository repository;
 
     @Autowired
+    UserRepository userRepository;
+
+    @Autowired
     ServiceAreaRepository serviceAreaRepository;
 
-    @PostMapping
-    public ResponseEntity<ServiceAreaAdmin> createServiceAreaAdmin(@RequestBody ServiceAreaAdmin newAdmin) {
+    @Autowired
+    UserService userService;
+
+    @PostMapping("/{userId}")
+    public ResponseEntity<ServiceAreaAdmin> createServiceAreaAdmin(@RequestBody ServiceAreaAdmin newAdmin, @PathVariable Long userId) {
+        User adminUser = userRepository.findById(userId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        newAdmin.setUser(adminUser);
         return new ResponseEntity<>(repository.save(newAdmin), HttpStatus.CREATED);
     }
 
@@ -32,16 +47,15 @@ public class ServiceAreaAdminController {
         return repository.findAll();
     }
 
-//    @PutMapping("/{id}")
-//    public @ResponseBody ServiceAreaAdmin updateServiceAreaAdminWithArea(@PathVariable Long id, @RequestBody ServiceArea updateData) {
-//        ServiceAreaAdmin updateAdmin = repository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-//
-//        ServiceArea serviceArea = serviceAreaRepository.findById(updateData.getId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-//
-//        updateAdmin.setServiceArea(serviceArea);
-//
-//        // TODO: 2/6/2023 set the area admin to the service area.
-//
-//        return repository.save(updateAdmin);
-//    }
+    @PutMapping("/{proId}/{areaId}")
+    public @ResponseBody ServiceAreaAdmin updateServiceAreaAdminWithArea(@PathVariable Long proId, @PathVariable Long areaId) {
+        ServiceAreaAdmin updateAdmin = repository.findById(proId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        ServiceArea serviceArea = serviceAreaRepository.findById(areaId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        updateAdmin.setServiceArea(serviceArea);
+
+        return repository.save(updateAdmin);
+    }
 }

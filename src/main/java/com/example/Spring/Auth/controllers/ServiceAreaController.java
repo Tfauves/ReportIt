@@ -1,12 +1,16 @@
 package com.example.Spring.Auth.controllers;
 
+import com.example.Spring.Auth.models.profile.ServiceAreaAdmin;
 import com.example.Spring.Auth.models.servicearea.ServiceArea;
+import com.example.Spring.Auth.repositories.ServiceAreaAdminRepository;
 import com.example.Spring.Auth.repositories.ServiceAreaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
+
 import java.util.List;
 
 @CrossOrigin
@@ -16,11 +20,24 @@ public class ServiceAreaController {
     @Autowired
     ServiceAreaRepository repository;
 
-    @PostMapping
+    @Autowired
+    ServiceAreaAdminRepository serviceAreaAdminRepository;
+
+    @PostMapping("/{adminId}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<ServiceArea> createServiceArea(@RequestBody ServiceArea newServiceArea) {
+    public ResponseEntity<ServiceArea> createServiceArea(@RequestBody ServiceArea newServiceArea, @PathVariable Long adminId) {
+
+        ServiceAreaAdmin areaAdmin = serviceAreaAdminRepository.findById(adminId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        newServiceArea.setServiceAreaAdmin(areaAdmin);
 
         return new ResponseEntity<>(repository.save(newServiceArea), HttpStatus.CREATED);
+    }
+
+    @PostMapping
+    public ResponseEntity<ServiceArea> createAServiceArea(@RequestBody ServiceArea newArea) {
+        return new ResponseEntity<>(repository.save(newArea), HttpStatus.CREATED);
     }
 
     @GetMapping()

@@ -3,6 +3,8 @@ package com.example.Spring.Auth.models.profile;
 import com.example.Spring.Auth.models.auth.User;
 import com.example.Spring.Auth.models.servicearea.ServiceArea;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 
 @Entity
@@ -22,20 +24,20 @@ public class ServiceAreaAdmin {
     @JsonIgnore
     private User user;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
+    @JsonIgnoreProperties("serviceAreaAdmin")
     private ServiceArea serviceArea;
 
     public ServiceAreaAdmin() {}
 
-    public ServiceAreaAdmin(String jobtitle, String email, String phone, String municipalityname, String populationsize, String state, User user, ServiceArea serviceArea) {
+    public ServiceAreaAdmin(User user, String jobtitle, String email, String phone, String municipalityname, String populationsize, String state) {
+        this.user = user;
         this.jobtitle = jobtitle;
         this.email = email;
         this.phone = phone;
         this.municipalityname = municipalityname;
         this.populationsize = populationsize;
         this.state = state;
-        this.user = user;
-        this.serviceArea = serviceArea;
     }
 
     public Long getId() {

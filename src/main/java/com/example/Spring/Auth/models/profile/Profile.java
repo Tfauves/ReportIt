@@ -37,7 +37,7 @@ public class Profile {
     private ServiceArea serviceArea;
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "report_id", referencedColumnName = "id")
+//    @JoinColumn(name = "report_id", referencedColumnName = "id")
     @JsonIncludeProperties({"id", "location", "description", "timestamp", "active", "issueType"})
     private Set<Report> report;
 
