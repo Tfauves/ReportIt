@@ -43,6 +43,7 @@ public class ReportController {
 
         Profile userProfile = profileRepository.findByUser_id(currentUser.getId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        userProfile.getReport().add(newReport);
 
         ServiceArea serviceArea = serviceAreaRepository.findById(areaId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
@@ -52,10 +53,6 @@ public class ReportController {
         newReport.setServiceArea(serviceArea);
         newReport.setProfile(userProfile);
 
-        userProfile.getReport().add(newReport);
-        profileRepository.save(userProfile);
-
-        serviceAreaRepository.save(serviceArea);
         return new ResponseEntity<>(repository.save(newReport), HttpStatus.CREATED);
     }
 
