@@ -1,8 +1,10 @@
 package com.example.Spring.Auth.controllers;
 
 import com.example.Spring.Auth.models.auth.User;
+import com.example.Spring.Auth.models.profile.Profile;
 import com.example.Spring.Auth.models.profile.ServiceAreaAdmin;
 import com.example.Spring.Auth.models.servicearea.ServiceArea;
+import com.example.Spring.Auth.repositories.ProfileRepository;
 import com.example.Spring.Auth.repositories.ServiceAreaAdminRepository;
 import com.example.Spring.Auth.repositories.ServiceAreaRepository;
 import com.example.Spring.Auth.repositories.UserRepository;
@@ -45,6 +47,17 @@ public class ServiceAreaAdminController {
     public @ResponseBody
     List<ServiceAreaAdmin> readAllAdmin() {
         return repository.findAll();
+    }
+
+    @GetMapping("/self")
+    public @ResponseBody ServiceAreaAdmin getSelf() {
+        User currentUser = userService.getCurrentUser();
+        if (currentUser == null) {
+            return null;
+        }
+
+        return repository.findByUserId(currentUser.getId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
     @PutMapping("/{proId}/{areaId}")

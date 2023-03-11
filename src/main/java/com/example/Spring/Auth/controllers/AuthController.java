@@ -113,4 +113,24 @@ public class AuthController {
         return new ResponseEntity(new MessageResponse("User Reg success"), HttpStatus.CREATED);
     }
 
+    @PostMapping("/areaAdminLog")
+    @PreAuthorize("hasRole('MOD')")
+    public ResponseEntity<?> authenticateAdmin(@RequestBody LoginRequest loginRequest) {
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        String jwt = jwtUtils.generateJwtToken(authentication);
+
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        List<String> roles = userDetails.getAuthorities().stream()
+                .map(item -> item.getAuthority())
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(new JwtResponse( jwt,
+                userDetails.getId(),
+                userDetails.getUsername(),
+                roles));
+    }
+
 }
