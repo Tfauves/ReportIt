@@ -36,12 +36,12 @@ public class ServiceAreaController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ServiceArea> createAServiceArea(@RequestBody ServiceArea newArea) {
         return new ResponseEntity<>(repository.save(newArea), HttpStatus.CREATED);
     }
 
-    @GetMapping()
-//    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/all")
     public @ResponseBody
     List<ServiceArea> getAllServiceArea() {
         return repository.findAll();
