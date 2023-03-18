@@ -16,14 +16,12 @@ import com.example.Spring.Auth.security.services.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -77,8 +75,6 @@ public class AuthController {
                     .badRequest()
                     .body(new MessageResponse("Error: Email already used plz login or reset password"));
         }
-
-        //create new account
         User user = new User(signupRequest.getFname(), signupRequest.getLname(), signupRequest.getUsername(), encoder.encode(signupRequest.getPassword()), signupRequest.getZip());
         Set<String> strRoles = signupRequest.getRoles();
         Set<Role> roles = new HashSet<>();
@@ -114,7 +110,6 @@ public class AuthController {
     }
 
     @PostMapping("/areaAdminLog")
-    @PreAuthorize("hasRole('MOD')")
     public ResponseEntity<?> authenticateAdmin(@RequestBody LoginRequest loginRequest) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
