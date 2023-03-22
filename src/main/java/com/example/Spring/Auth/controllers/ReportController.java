@@ -73,4 +73,17 @@ public class ReportController {
         return repository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
+    @PutMapping("/process/{reportId}")
+    public @ResponseBody Report processReport(@PathVariable Long reportId, @RequestBody Report updateData) {
+
+        Report processedReport = repository.findById(reportId)
+                .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        if (updateData.getActive() != null) processedReport.setActive(updateData.getActive());
+        if (updateData.getPending() != null) processedReport.setPending(updateData.getPending());
+        if (updateData.getResolved() != null) processedReport.setResolved(updateData.getResolved());
+        if(updateData.getAdminComment() != null) processedReport.setAdminComment(updateData.getAdminComment());
+
+        return repository.save(processedReport);
+    }
+
 }

@@ -28,6 +28,9 @@ public class Report {
     private String description;
     private Timestamp timestamp = new Timestamp(System.currentTimeMillis());
     private Boolean isActive = true;
+    private Boolean isPending = false;
+    private Boolean isResolved = false;
+    private String adminComment;
 
     public Report() {}
 
@@ -105,4 +108,27 @@ public class Report {
     }
 
 
+    public Boolean getPending() {
+        return isPending;
+    }
+
+    public void setPending(Boolean pending) {
+        isPending = pending;
+    }
+
+    public Boolean getResolved() {
+        return isResolved;
+    }
+
+    public void setResolved(Boolean resolved) {
+        isResolved = resolved;
+    }
+
+    public String getAdminComment() {
+        return adminComment;
+    }
+
+    public void setAdminComment(String adminComment) {
+        this.adminComment = adminComment;
+    }
 }
