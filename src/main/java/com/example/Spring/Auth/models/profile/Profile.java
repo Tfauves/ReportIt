@@ -102,7 +102,7 @@ public class Profile {
     }
 
     public void setCivicWins(Integer civicWins) {
-        this.civicWins = civicWins;
+        this.civicWins += civicWins;
     }
 
     public ServiceArea getServiceArea() {

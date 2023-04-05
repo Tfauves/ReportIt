@@ -11,10 +11,12 @@ import com.example.Spring.Auth.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Objects;
 
 @CrossOrigin
 @RestController
@@ -73,17 +75,57 @@ public class ReportController {
         return repository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
-    @PutMapping("/process/{reportId}")
-    public @ResponseBody Report processReport(@PathVariable Long reportId, @RequestBody Report updateData) {
-
-        Report processedReport = repository.findById(reportId)
+    @PutMapping("/pending/{reportId}")
+    @PreAuthorize("hasRole('MOD')")
+    public @ResponseBody Report updateToPending(@PathVariable Long reportId) {
+        Report pendingReport = repository.findById(reportId)
                 .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        if (updateData.getActive() != null) processedReport.setActive(updateData.getActive());
-        if (updateData.getPending() != null) processedReport.setPending(updateData.getPending());
-        if (updateData.getResolved() != null) processedReport.setResolved(updateData.getResolved());
-        if(updateData.getAdminComment() != null) processedReport.setAdminComment(updateData.getAdminComment());
+        pendingReport.setPending(true);
+        pendingReport.setAdminComment("received");
 
-        return repository.save(processedReport);
+        return repository.save(pendingReport);
+    }
+
+    @PutMapping("resolve/{reportId}")
+    @PreAuthorize("hasRole('MOD')")
+    public @ResponseBody Report resolveReport(@PathVariable Long reportId) {
+        Report resolvedReport = repository.findById(reportId)
+                .orElseThrow(() ->  new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        Profile reportSenderProfile = profileRepository.findByUser_id(
+                        resolvedReport.getProfile().getId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        resolvedReport.setResolved(true);
+        resolvedReport.setAdminComment("This report has been successfully closed");
+        resolvedReport.setPending(false);
+        resolvedReport.setActive(false);
+
+        reportSenderProfile.setCivicWins(1);
+        profileRepository.save(reportSenderProfile);
+
+        return repository.save(resolvedReport);
+    }
+
+    @PutMapping("unfounded/{reportId}")
+    public ResponseEntity<String> destroyReport(@PathVariable Long reportId) {
+        Report unfoundedReport = repository.findById(reportId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        unfoundedReport.setUnfounded(true);
+        unfoundedReport.setActive(false);
+        unfoundedReport.setPending(false);
+        unfoundedReport.setResolved(false);
+        unfoundedReport.setAdminComment("Unfounded");
+
+        Profile senderProfile = profileRepository.findByUser_id(unfoundedReport.getProfile().getId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        senderProfile.getReport().removeIf(report -> Objects.equals(report.getId(), reportId));
+        profileRepository.save(senderProfile);
+
+        repository.save(unfoundedReport);
+        return new ResponseEntity<>("deleted", HttpStatus.OK);
     }
 
 }

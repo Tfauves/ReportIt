@@ -8,7 +8,6 @@ import java.sql.Timestamp;
 
 @Entity
 public class Report {
-    // if crash reset generation type to identity
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -30,6 +29,7 @@ public class Report {
     private Boolean isActive = true;
     private Boolean isPending = false;
     private Boolean isResolved = false;
+    private Boolean isUnfounded = false;
     private String adminComment;
 
     public Report() {}
@@ -130,5 +130,13 @@ public class Report {
 
     public void setAdminComment(String adminComment) {
         this.adminComment = adminComment;
+    }
+
+    public Boolean getUnfounded() {
+        return isUnfounded;
+    }
+
+    public void setUnfounded(Boolean unfounded) {
+        isUnfounded = unfounded;
     }
 }
