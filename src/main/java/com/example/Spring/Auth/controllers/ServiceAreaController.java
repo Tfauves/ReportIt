@@ -53,4 +53,14 @@ public class ServiceAreaController {
 
     }
 
+    @PutMapping("/add/admin/{adminId}/{areaId}")
+    public ResponseEntity<ServiceArea> addAdmin(@PathVariable Long adminId, @PathVariable Long areaId) {
+        ServiceArea updateArea = repository.findById(areaId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        updateArea.setServiceAreaAdmin(serviceAreaAdminRepository.getById(adminId));
+
+        return new ResponseEntity<>(repository.save(updateArea), HttpStatus.CREATED);
+    }
+
 }

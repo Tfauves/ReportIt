@@ -23,14 +23,15 @@ public class Report {
     @JsonIncludeProperties("id")
     private ServiceArea serviceArea;
 
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "status_id")
+    private Status status;
+
     private String issueType;
     private String location;
     private String description;
     private Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-    private Boolean isActive = true;
-    private Boolean isPending = false;
-    private Boolean isResolved = false;
-    private Boolean isUnfounded = false;
+
     private String adminComment;
 
     public Report() {}
@@ -42,6 +43,7 @@ public class Report {
         this.location = location;
         this.description = description;
         this.timestamp = timestamp;
+        status.setActive(true);
     }
 
     public Long getId() {
@@ -100,31 +102,6 @@ public class Report {
         this.timestamp = timestamp;
     }
 
-    public Boolean getActive() {
-        return isActive;
-    }
-
-    public void setActive(Boolean active) {
-        isActive = active;
-    }
-
-
-    public Boolean getPending() {
-        return isPending;
-    }
-
-    public void setPending(Boolean pending) {
-        isPending = pending;
-    }
-
-    public Boolean getResolved() {
-        return isResolved;
-    }
-
-    public void setResolved(Boolean resolved) {
-        isResolved = resolved;
-    }
-
     public String getAdminComment() {
         return adminComment;
     }
@@ -133,11 +110,11 @@ public class Report {
         this.adminComment = adminComment;
     }
 
-    public Boolean getUnfounded() {
-        return isUnfounded;
+    public Status getStatus() {
+        return status;
     }
 
-    public void setUnfounded(Boolean unfounded) {
-        isUnfounded = unfounded;
+    public void setStatus(Status status) {
+        this.status = status;
     }
 }

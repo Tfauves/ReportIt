@@ -47,15 +47,25 @@ public class ReportController {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         userProfile.getReport().add(newReport);
 
+        Report report = new Report();
+
         ServiceArea serviceArea = serviceAreaRepository.findById(areaId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        serviceArea.getReports().add(newReport);
+
+
+        report.setServiceArea(serviceArea);
+        report.setProfile(userProfile);
+
+        if (newReport.getDescription() != null) report.setDescription(newReport.getDescription());
+        if (newReport.getIssueType() != null) report.setIssueType(newReport.getIssueType());
+        if (newReport.getLocation() != null) report.setLocation(newReport.getLocation());
+        report.setStatus(newReport.getStatus());
+
+        serviceArea.getReports().add(report);
         serviceArea.setOpenReports(1);
 
-        newReport.setServiceArea(serviceArea);
-        newReport.setProfile(userProfile);
 
-        return new ResponseEntity<>(repository.save(newReport), HttpStatus.CREATED);
+        return new ResponseEntity<>(repository.save(report), HttpStatus.CREATED);
     }
 
     @GetMapping
@@ -75,57 +85,57 @@ public class ReportController {
         return repository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
-    @PutMapping("/pending/{reportId}")
-    @PreAuthorize("hasRole('MOD')")
-    public @ResponseBody Report updateToPending(@PathVariable Long reportId) {
-        Report pendingReport = repository.findById(reportId)
-                .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        pendingReport.setPending(true);
-        pendingReport.setAdminComment("received");
+//    @PostMapping("/pending/{reportId}")
+////    @PreAuthorize("hasRole('MOD')")
+//    public @ResponseBody Report updateToPending(@PathVariable Long reportId) {
+//        Report pendingReport = repository.findById(reportId)
+//                .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND));
+//        pendingReport.setPending(true);
+//        pendingReport.setAdminComment("received");
+//
+//        return repository.save(pendingReport);
+//    }
 
-        return repository.save(pendingReport);
-    }
-
-    @PutMapping("resolve/{reportId}")
-    @PreAuthorize("hasRole('MOD')")
-    public @ResponseBody Report resolveReport(@PathVariable Long reportId) {
-        Report resolvedReport = repository.findById(reportId)
-                .orElseThrow(() ->  new ResponseStatusException(HttpStatus.NOT_FOUND));
-
-        Profile reportSenderProfile = profileRepository.findByUser_id(
-                        resolvedReport.getProfile().getId())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-
-        resolvedReport.setResolved(true);
-        resolvedReport.setAdminComment("This report has been successfully closed");
-        resolvedReport.setPending(false);
-        resolvedReport.setActive(false);
-
-        reportSenderProfile.setCivicWins(1);
-        profileRepository.save(reportSenderProfile);
-
-        return repository.save(resolvedReport);
-    }
-
-    @PutMapping("unfounded/{reportId}")
-    public ResponseEntity<String> destroyReport(@PathVariable Long reportId) {
-        Report unfoundedReport = repository.findById(reportId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-
-        unfoundedReport.setUnfounded(true);
-        unfoundedReport.setActive(false);
-        unfoundedReport.setPending(false);
-        unfoundedReport.setResolved(false);
-        unfoundedReport.setAdminComment("Unfounded");
-
-        Profile senderProfile = profileRepository.findByUser_id(unfoundedReport.getProfile().getId())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-
-        senderProfile.getReport().removeIf(report -> Objects.equals(report.getId(), reportId));
-        profileRepository.save(senderProfile);
-
-        repository.save(unfoundedReport);
-        return new ResponseEntity<>("deleted", HttpStatus.OK);
-    }
+//    @PutMapping("resolve/{reportId}")
+//    @PreAuthorize("hasRole('MOD')")
+//    public @ResponseBody Report resolveReport(@PathVariable Long reportId) {
+//        Report resolvedReport = repository.findById(reportId)
+//                .orElseThrow(() ->  new ResponseStatusException(HttpStatus.NOT_FOUND));
+//
+//        Profile reportSenderProfile = profileRepository.findByUser_id(
+//                        resolvedReport.getProfile().getId())
+//                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+//
+//        resolvedReport.setResolved(true);
+//        resolvedReport.setAdminComment("This report has been successfully closed");
+//        resolvedReport.setPending(false);
+//        resolvedReport.setActive(false);
+//
+//        reportSenderProfile.setCivicWins(1);
+//        profileRepository.save(reportSenderProfile);
+//
+//        return repository.save(resolvedReport);
+//    }
+//
+//    @PutMapping("unfounded/{reportId}")
+//    public ResponseEntity<String> destroyReport(@PathVariable Long reportId) {
+//        Report unfoundedReport = repository.findById(reportId)
+//                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+//
+//        unfoundedReport.setUnfounded(true);
+//        unfoundedReport.setActive(false);
+//        unfoundedReport.setPending(false);
+//        unfoundedReport.setResolved(false);
+//        unfoundedReport.setAdminComment("Unfounded");
+//
+//        Profile senderProfile = profileRepository.findByUser_id(unfoundedReport.getProfile().getId())
+//                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+//
+//        senderProfile.getReport().removeIf(report -> Objects.equals(report.getId(), reportId));
+//        profileRepository.save(senderProfile);
+//
+//        repository.save(unfoundedReport);
+//        return new ResponseEntity<>("deleted", HttpStatus.OK);
+//    }
 
 }
