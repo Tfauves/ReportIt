@@ -3,6 +3,7 @@ package com.example.Spring.Auth.controllers;
 import com.example.Spring.Auth.models.auth.User;
 import com.example.Spring.Auth.models.profile.Profile;
 import com.example.Spring.Auth.models.report.Report;
+import com.example.Spring.Auth.models.report.Status;
 import com.example.Spring.Auth.models.servicearea.ServiceArea;
 import com.example.Spring.Auth.repositories.ProfileRepository;
 import com.example.Spring.Auth.repositories.ReportRepository;
@@ -47,25 +48,19 @@ public class ReportController {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         userProfile.getReport().add(newReport);
 
-        Report report = new Report();
-
         ServiceArea serviceArea = serviceAreaRepository.findById(areaId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
+        newReport.setServiceArea(serviceArea);
+        newReport.setProfile(userProfile);
 
-        report.setServiceArea(serviceArea);
-        report.setProfile(userProfile);
+        newReport.setStatus(new Status());
+        newReport.getStatus().setActive(true);
 
-        if (newReport.getDescription() != null) report.setDescription(newReport.getDescription());
-        if (newReport.getIssueType() != null) report.setIssueType(newReport.getIssueType());
-        if (newReport.getLocation() != null) report.setLocation(newReport.getLocation());
-        report.setStatus(newReport.getStatus());
+        serviceArea.getReports().add(newReport);
+        serviceArea.setOpenReports(serviceArea.getOpenReports() + 1);
 
-        serviceArea.getReports().add(report);
-        serviceArea.setOpenReports(1);
-
-
-        return new ResponseEntity<>(repository.save(report), HttpStatus.CREATED);
+        return new ResponseEntity<>(repository.save(newReport), HttpStatus.CREATED);
     }
 
     @GetMapping

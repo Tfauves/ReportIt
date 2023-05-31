@@ -6,6 +6,8 @@ import com.fasterxml.jackson.annotation.JsonIncludeProperties;
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Entity
 public class Report {
@@ -30,20 +32,24 @@ public class Report {
     private String issueType;
     private String location;
     private String description;
-    private Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+//    private Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+    private LocalDateTime timestamp = LocalDateTime.now();
 
     private String adminComment;
 
     public Report() {}
 
-    public Report(Profile profile, ServiceArea serviceArea, String issueType, String location, String description, Timestamp timestamp) {
+    public Report(Profile profile, ServiceArea serviceArea, String adminComment, String issueType, String location, String description, Status status) {
         this.profile = profile;
         this.serviceArea = serviceArea;
+        this.adminComment = adminComment;
         this.issueType = issueType;
         this.location = location;
         this.description = description;
-        this.timestamp = timestamp;
-        status.setActive(true);
+//        this.timestamp = timestamp;
+        this.timestamp = LocalDateTime.now();
+        this.status = status;
+
     }
 
     public Long getId() {
@@ -94,13 +100,13 @@ public class Report {
         this.description = description;
     }
 
-    public String getTimestamp() {
-        return new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(timestamp);
-    }
+//    public String getTimestamp() {
+//        return new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(timestamp);
+//    }
 
-    public void setTimestamp(Timestamp timestamp) {
-        this.timestamp = timestamp;
-    }
+//    public void setTimestamp(Timestamp timestamp) {
+//        this.timestamp = timestamp;
+//    }
 
     public String getAdminComment() {
         return adminComment;
@@ -116,5 +122,14 @@ public class Report {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public void setTimestamp(LocalDateTime timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    public String getTimestamp() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd, yyyy hh:mm a");
+        return timestamp.format(formatter);
     }
 }

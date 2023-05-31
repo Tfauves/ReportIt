@@ -11,10 +11,10 @@ public class Status {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private Boolean isActive = true;
-    private Boolean isPending = false;
-    private Boolean isResolved = false;
-    private Boolean isUnfounded = false;
+    private Boolean active;
+    private Boolean pending;
+    private Boolean resolved;
+    private Boolean unfounded;
 
     public Status() {
     }
@@ -29,34 +29,34 @@ public class Status {
     }
 
     public Boolean getActive() {
-        return isActive;
+        return active;
     }
 
     public void setActive(Boolean active) {
-        isActive = active;
+        this.active = active;
     }
 
     public Boolean getPending() {
-        return isPending;
+        return pending;
     }
 
     public void setPending(Boolean pending) {
-        isPending = pending;
+        this.pending = pending;
     }
 
     public Boolean getResolved() {
-        return isResolved;
+        return resolved;
     }
 
     public void setResolved(Boolean resolved) {
-        isResolved = resolved;
+        this.resolved = resolved;
     }
 
     public Boolean getUnfounded() {
-        return isUnfounded;
+        return unfounded;
     }
 
     public void setUnfounded(Boolean unfounded) {
-        isUnfounded = unfounded;
+        this.unfounded = unfounded;
     }
 }
