@@ -4,8 +4,6 @@ import com.example.Spring.Auth.models.profile.Profile;
 import com.example.Spring.Auth.models.servicearea.ServiceArea;
 import com.fasterxml.jackson.annotation.JsonIncludeProperties;
 import javax.persistence.*;
-import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -25,31 +23,26 @@ public class Report {
     @JsonIncludeProperties("id")
     private ServiceArea serviceArea;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "status_id")
-    private Status status;
+    private String statusState;
 
     private String issueType;
     private String location;
     private String description;
-//    private Timestamp timestamp = new Timestamp(System.currentTimeMillis());
     private LocalDateTime timestamp = LocalDateTime.now();
 
     private String adminComment;
 
     public Report() {}
 
-    public Report(Profile profile, ServiceArea serviceArea, String adminComment, String issueType, String location, String description, Status status) {
+    public Report(Profile profile, ServiceArea serviceArea, String adminComment, String issueType, String location, String description, String statusState) {
         this.profile = profile;
         this.serviceArea = serviceArea;
         this.adminComment = adminComment;
         this.issueType = issueType;
         this.location = location;
         this.description = description;
-//        this.timestamp = timestamp;
         this.timestamp = LocalDateTime.now();
-        this.status = status;
-
+        this.statusState = statusState;
     }
 
     public Long getId() {
@@ -100,14 +93,6 @@ public class Report {
         this.description = description;
     }
 
-//    public String getTimestamp() {
-//        return new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(timestamp);
-//    }
-
-//    public void setTimestamp(Timestamp timestamp) {
-//        this.timestamp = timestamp;
-//    }
-
     public String getAdminComment() {
         return adminComment;
     }
@@ -116,12 +101,12 @@ public class Report {
         this.adminComment = adminComment;
     }
 
-    public Status getStatus() {
-        return status;
+    public String getStatusState() {
+        return statusState;
     }
 
-    public void setStatus(Status status) {
-        this.status = status;
+    public void setStatusState(String statusState) {
+        this.statusState = statusState;
     }
 
     public void setTimestamp(LocalDateTime timestamp) {
