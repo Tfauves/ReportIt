@@ -3,7 +3,6 @@ package com.example.Spring.Auth.controllers;
 import com.example.Spring.Auth.models.auth.User;
 import com.example.Spring.Auth.models.profile.Profile;
 import com.example.Spring.Auth.models.report.Report;
-import com.example.Spring.Auth.models.report.Status;
 import com.example.Spring.Auth.models.servicearea.ServiceArea;
 import com.example.Spring.Auth.repositories.ProfileRepository;
 import com.example.Spring.Auth.repositories.ReportRepository;
@@ -12,12 +11,10 @@ import com.example.Spring.Auth.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-
 import java.util.List;
-import java.util.Objects;
+
 
 @CrossOrigin
 @RestController
@@ -54,8 +51,8 @@ public class ReportController {
         newReport.setServiceArea(serviceArea);
         newReport.setProfile(userProfile);
 
-        newReport.setStatus(new Status());
-        newReport.getStatus().setActive(true);
+        newReport.setStatusState("submitted");
+        newReport.setAdminComment("report received");
 
         serviceArea.getReports().add(newReport);
         serviceArea.setOpenReports(serviceArea.getOpenReports() + 1);

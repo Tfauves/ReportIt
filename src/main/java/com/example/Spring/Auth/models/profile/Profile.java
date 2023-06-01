@@ -38,7 +38,7 @@ public class Profile {
 
     @OneToMany(cascade = CascadeType.ALL)
 //    @JoinColumn(name = "report_id", referencedColumnName = "id")
-    @JsonIncludeProperties({"id", "location", "description", "timestamp", "active", "issueType"})
+    @JsonIncludeProperties({"id", "location", "description", "timestamp", "statusState", "adminComment", "issueType"})
     @OrderBy("timestamp DESC")
     private Set<Report> report;
 
