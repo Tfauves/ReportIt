@@ -165,6 +165,18 @@ public class ProfileController {
 
     }
 
+    @PutMapping("/service/{areaId}")
+    public @ResponseBody Profile addAreaToProfile(@PathVariable Long areaId) {
+        User currentUser = userService.getCurrentUser();
+        Profile currentUserProfile = repository.findByUser_id(currentUser.getId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        ServiceArea addArea = serviceAreaRepository.findById(areaId)
+                .orElseThrow(() ->new ResponseStatusException(HttpStatus.NOT_FOUND));
+        currentUserProfile.setServiceArea(addArea);
+        return repository.save(currentUserProfile);
+    }
+
 
     @PutMapping("/area/{proId}")
     public @ResponseBody ServiceAreaAdmin updateProfileAreaById(@RequestBody ServiceAreaAdmin updateData, @PathVariable Long proId) {
