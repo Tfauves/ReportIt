@@ -155,11 +155,32 @@ public class ProfileController {
         if (updateData.getProfilePic() != null) {
             Avatar avatar = updateData.getProfilePic();
             avatar.setUrl(updateData.getProfilePic().getUrl());
-            avatarRepository.save(avatar);
+//            avatarRepository.save(avatar);
             profile.setProfilePic(avatar);
         }
         Avatar avatar = profile.getProfilePic();
         avatarRepository.save(avatar);
+
+        return repository.save(profile);
+
+    }
+
+    @PutMapping("/update")
+    public @ResponseBody Profile updateSelf(@RequestBody Profile updateData) {
+        User currentUser = userService.getCurrentUser();
+        if (currentUser == null) return null;
+
+        Profile profile = repository.findByUser_id(currentUser.getId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+
+        if (updateData.getProfilePic().getUrl() != null) {
+            String picUrl = updateData.getProfilePic().getUrl();
+            Avatar proPic = new Avatar(); // Create a new Avatar object
+            proPic.setUrl(picUrl);
+            profile.setProfilePic(proPic);
+        }
+
 
         return repository.save(profile);
 
